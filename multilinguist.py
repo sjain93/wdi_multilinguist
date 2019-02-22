@@ -1,8 +1,9 @@
 import requests
 import json
+import random
 
 class Multilinguist:
-  """This class represents a world traveller who knows 
+  """This class represents a world traveller who knows
   what languages are spoken in each country around the world
   and can cobble together a sentence in most of them
   (but not very well)
@@ -15,7 +16,7 @@ class Multilinguist:
 
   def __init__(self):
     """Initializes the multilinguist's current_lang to 'en'
-    
+
     Returns
     -------
     Multilinguist
@@ -34,7 +35,7 @@ class Multilinguist:
 
     Returns
     -------
-    bool 
+    bool
         2 letter iso639_1 language code.
     """
     params = {'fullText': 'true'}
@@ -76,5 +77,46 @@ class Multilinguist:
     params = {'text': msg, 'to': self.current_lang, 'from': 'en'}
     response = requests.get(self.translatr_base_url, params=params)
     json_response = json.loads(response.text)
+    # print(response.status_code)
+    # print(json_response)
     return json_response['translationText']
 
+
+class Math_genius(Multilinguist):
+
+    def __init__(self):
+        super(). __init__()
+
+    def report_total(self, num_list = []):
+        self.num_list = num_list
+        math_sum = sum(self.num_list)
+        return self.say_in_local_language("The total is {}".format(math_sum))
+
+me = Math_genius()
+print(me.report_total([23,45,676,34,5778,4,23,5465]))
+me.travel_to("India")
+print(me.report_total([6,3,6,68,455,4,467,57,4,534]))
+
+class Quote_collector(Multilinguist):
+    quotes = []
+
+    def __init__(self):
+        super(). __init__()
+
+    def quote_add(self, new_quote):
+        self.new_quote = str(new_quote)
+        cls.quotes.append(self.new_quote)
+
+    def quote_translate(self):
+        """Taking a random quote from the quote list and translating it based on local_lang"""
+        to_translate = cls.quotes.random.choice()
+
+        if self.local_lang == "en":
+            return "{}".format(to_translate)
+        else:
+            return self.say_in_local_language("{}".format(to_translate))
+
+hobo = Quote_collector()
+hobo.quote_add("To be or not to be that is the question")
+hobo.travel_to("India")
+print(hobo.quote_translate())
